@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DTO\CreateSupportDTO;
+use App\DTO\UpdateSupportDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateSupportRequest;
 use App\Models\Support;
@@ -80,7 +81,7 @@ class SupportController extends Controller
         $support = $this->service->update(
             UpdateSupportDTO::makeFromRequest($request)
         );
-        
+
         if(!$support) {
             return back();
         }
