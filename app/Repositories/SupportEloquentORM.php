@@ -1,8 +1,12 @@
 <?php
 
+namespace App\Repositories;
+
 use App\DTO\CreateSupportDTO;
 use App\DTO\UpdateSupportDto;
+use App\Models\Support;
 use App\Repositories\SupportRepositoryInterface;
+use stdClass;
 
 class SupporEloquentORM implements SupportRepositoryInterface
 {
@@ -19,7 +23,7 @@ class SupporEloquentORM implements SupportRepositoryInterface
                             $query->orWhere('body', 'like', "%{$filter}%");
                         }
                     })
-                    ->all()
+                    ->get()
                     ->toArray();
     }
 
@@ -38,13 +42,25 @@ class SupporEloquentORM implements SupportRepositoryInterface
         $this->model->findOrFail($id)->delete();
     }
 
-    public function new(CreateSupportDTO $dto): stdClass4
+    public function new(CreateSupportDTO $dto): stdClass
     {
+        $support = $this->model->create(
+            (array) $dto
+        );
 
+        return (object) $support->toArray();
     }
     
     public function upadate(UpdateSupportDTO $dto): stdClass|null
     {
+        if (!$support = $this->model->find($dto->id)) {
+            return null;
+        }
 
+        $support->update(
+            (array) $dto
+        );
+
+        return (object) $support->toArray();
     }
 }
