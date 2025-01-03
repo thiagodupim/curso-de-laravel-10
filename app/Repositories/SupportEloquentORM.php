@@ -14,6 +14,18 @@ class SupporEloquentORM implements SupportRepositoryInterface
         protected Support $model
     ) {}
 
+    public function paginate(int $page = 1, int $totalPerPage = 15, string $filter = null)
+    {
+        $result = $this->model 
+                    ->where(function ($query) use ($filter) {
+                        if ($filter) {
+                            $query->where('subject', $filter);
+                            $query->orWhere('body', 'like', "%{$filter}%");
+                        }
+                    })
+                    ->paginate($totalPerPage, ['*'], 'page', $page);
+    }
+
     public function getAll(string $filter = null): array
     {
         return $this->model
