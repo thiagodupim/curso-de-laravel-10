@@ -8,6 +8,7 @@ use App\Services\SupportService;
 use App\Http\Requests\StoreUpdateSupportResquest;
 use App\Http\Resources\SupportResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class SupportController extends Controller
 {
@@ -40,7 +41,11 @@ class SupportController extends Controller
      */
     public function show(string $id)
     {
-        //
+        if (!$support = $this->service->findOne($id)) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
@@ -56,6 +61,14 @@ class SupportController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if (!$support = $this->service->findOne($id)) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $this->service->delete($id);
+
+        return response()->json([], 204);
     }
 }

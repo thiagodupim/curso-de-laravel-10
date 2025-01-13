@@ -33,7 +33,7 @@ class SupportService
         return $this->repository->getAll($filter);
     }
 
-    public function findOnde(string $id): stdClass|null
+    public function findOne(string $id): stdClass|null
     {
         return $this->repository->findOne($id);
     }
