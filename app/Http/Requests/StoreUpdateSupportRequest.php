@@ -32,7 +32,7 @@ class StoreUpdateSupportRequest extends FormRequest
         ];
 
         //Exceção quando for update
-        if ($this->method() === 'PUT') {
+        if ($this->method() === 'PUT' || $this->method() === 'PATCH') {
             $rules['subject'] = [
                 'required',
                 'min:3',
@@ -43,7 +43,7 @@ class StoreUpdateSupportRequest extends FormRequest
                 //Mas, pode adicionar uma exceção quando o id que está recebendo for igual o valor da coluna id
 
                 //Abaixo faz mesma coisa, porém mais legível
-                Rule::unique('supports')->ignore($this->id),
+                Rule::unique('supports')->ignore($this->support ?? $this->id),
             ];
         }
 
